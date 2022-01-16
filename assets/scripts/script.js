@@ -7,7 +7,9 @@ var citySearchList = document.querySelector(".city-search-list")
 var citySearchItem = document.querySelector(".list-group-item")
 var selectedCity
 
-var cityManualSearch = document.querySelector("#search-button")
+var cityManualSearchBtn = document.querySelector("#search-button")
+
+var cityName = document.querySelector("#city-name")
 
 // Get weather data for selected city
 // TODO: pass in selected city name
@@ -28,7 +30,8 @@ citySearchList.addEventListener("click", function(event) {
     event.preventDefault();
     var clickedCity = event.target;
     selectedCity = clickedCity.getAttribute("id");
-    getWeatherData();
+    cityName.textContent = selectedCity;
+    getWeatherSelected();
 })
 
 function getWeatherEntered() {
@@ -44,11 +47,12 @@ function getWeatherEntered() {
         })
 }
 
-cityManualSearch.addEventListener("click", function(event) {
+cityManualSearchBtn.addEventListener("click", function(event) {
     event.preventDefault();
+    // TODO: Add "+" between words
     enteredCity = typedCity.value;
     console.log(enteredCity);
+    cityName.textContent = enteredCity
     getWeatherEntered();
 })
 
-// Loop through returned data and render on the page
