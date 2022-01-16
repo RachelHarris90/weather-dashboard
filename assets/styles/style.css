@@ -1,0 +1,25 @@
+main {
+    width: 70%;
+    border: 10px;
+    border-color: black;
+}
+
+
+.city-name {
+    border-color: black;
+    border: 10px;
+}
+
+.forecast {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 100%;
+    border: 10px;
+    border-color: black;
+}
+
+.card {
+    background-color: navy;
+    color: white;
+}
