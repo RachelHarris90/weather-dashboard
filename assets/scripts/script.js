@@ -8,7 +8,7 @@ var chosenCity
 var cityManualSearchBtn = document.querySelector("#search-button")
 
 // Current weather list
-var currentTemperature = document.querySelector("#current-temperature")
+var currentTemp = document.querySelector("#current-temperature")
 var currentWind = document.querySelector("#current-wind")
 var currentHumidity = document.querySelector("#current-humidity")
 var currentUvIndex = document.querySelector("#current-uv-index")
@@ -24,13 +24,15 @@ currentDate.textContent = moment().format("MM-DD-YYYY");
 
 // Forecasted weather card elements
 var forecastIcon = document.querySelector(".forecast-icon")
-var forecastTemperature = document.querySelector(".forecast-temp")
+var forecastTemp = document.querySelector(".forecast-temp")
 var forecastWind = document.querySelector(".forecast-wind")
 var forecastHumidity = document.querySelector(".forecast-temp")
 
 
 // Get current weather data for selected city
 function getCurrentWeather() {
+    // TODO: Retest when API key is activated
+    // TODO: Validate that city is not required
     var requestURL = "https://api.openweathermap.org/data/2.5/weather?q=" + chosenCity + "&appid=" + APIkey;
 
     fetch(requestURL)
@@ -40,7 +42,8 @@ function getCurrentWeather() {
         .then(function (data) {
             console.log(data)
             currentWeather = data
-            currentTemperature.textContent = "Temperature: " + data.main.temp + "F";
+            // TODO: Add icon field
+            currentTemp.textContent = "Temperature: " + data.main.temp + "F";
             currentWind.textContent = "Wind: " + data.wind.speed + "MPH";
             currentHumidity.textContent = "Humidity: " + data.main.humidity + "%";
             // UV data requires OneCallAPI
@@ -49,7 +52,7 @@ function getCurrentWeather() {
 }
 
 // Get forecasted weather data for selected city
-function getCurrentWeather() {
+function getForecastedWeather() {
     var requestURL = "api.openweathermap.org/data/2.5/forecast/daily?q=" + chosenCity + "&appid=" + APIkey;
 
     fetch(requestURL)
@@ -58,8 +61,15 @@ function getCurrentWeather() {
         })
         .then(function (data) {
             console.log(data)
-            currentWeather = data
-            currentTemperature.textContent = "Temperature: " + data.main.temp + "F";
+            forecastedWeather = data;
+            console.log("Forecasted data: " + data)
+
+            // TODO: Loop through data and set content for 5 days
+
+            // TODO: Add icon field
+            // TODO: Set content of forecasted temperature element
+            // TODO: Set content of forecasted wind element
+            // TODO: Set content of forecasted humidity element
         })
 }
 
@@ -70,7 +80,8 @@ citySearchList.addEventListener("click", function(event) {
     var clickedCity = event.target;
     chosenCity = clickedCity.getAttribute("id");
     cityName.textContent = chosenCity;
-    getCurrentWeather();
+    getCurrentWeather(); 
+    // getForecastedWeather();  
 })
 
 
@@ -81,6 +92,7 @@ cityManualSearchBtn.addEventListener("click", function(event) {
     chosenCity = typedCity.value;
     console.log(chosenCity);
     cityName.textContent = chosenCity
-    getWeather();
+    getCurrentWeather();
+    // getForecastedWeather();
 })
 
