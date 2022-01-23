@@ -50,7 +50,6 @@ function getCurrentWeather() {
             console.log(data)
             // Save the data into currentWeather variable
             currentWeather = data
-            // TODO: Add icon field
 
             // Save the city, longatude and latitude to local storage
             savedCities = {
@@ -61,12 +60,12 @@ function getCurrentWeather() {
             localStorage.setItem("savedCities", JSON.stringify(savedCities));
 
             // Set the content of the page from the API data
-            currentIcon.textContent = currentWeather.weather[0].icon
+            currentIcon.setAttribute("src", "http://openweathermap.org/img/wn/" + currentWeather.weather[0].icon + ".png");
             currentTemp.textContent = "Temperature: " + currentWeather.main.temp + "F";
             currentWind.textContent = "Wind: " + currentWeather.wind.speed + "MPH";
             currentHumidity.textContent = "Humidity: " + currentWeather.main.humidity + "%";
             // TODO: UV data requires OneCallAPI
-            // currentUvIndex.textContent = "UV Index: " + data.main.uv;
+            // 
 
             // Now that we have saved the city, longatude and latitude to local storage, we can get the forecasted weather
             getForecastedWeather();
@@ -97,19 +96,19 @@ function getForecastedWeather() {
             forecastedWeather = data;
             console.log(forecastedWeather)
 
+            // Set today's UV index
+            currentUvIndex.textContent = "UV Index: " + forecastedWeather.current.uvi;
+
             // Loop through to set the date and cooresponding forecast data
             for (i = 0; i < forecastedDate.length; i++) {
-                forecastedDate[i].textContent = moment().add('days', i).format("DD-MM-YYYY");
+                forecastedDate[i].textContent = moment().add('days', i+1).format("DD-MM-YYYY");
                 forecastedDate[i].setAttribute("id", forecastedWeather.daily[i].dt); 
 
-                // forecastIcon.textContent = "Icon here";
+                forecastIcon[i].setAttribute("src", "http://openweathermap.org/img/wn/" + forecastedWeather.daily[i].weather[0].icon + ".png");
                 forecastTemp[i].textContent = "Temperature: " + forecastedWeather.daily[i].temp.day +  "F";
                 forecastWind[i].textContent = "Wind: " + forecastedWeather.daily[i].wind_speed + "MPH";
                 forecastHumidity[i].textContent = "Humidity: " + forecastedWeather.daily[i].humidity + "%";
-
-                // TODO: Add icon field   
         }
-
 })}
 
 

@@ -14,24 +14,26 @@
     <link rel="stylesheet" href="./assets/styles/style.css" />
 </head>
 <body>
-    <header class="p-3">
+    <header class="p-3 mb-3">
         <h1 class="text-center">Weather Dashboard</h1>
     </header>
     
     <main class="container row">
         <aside class="city-search col-3">
             <h2>Search for a city:</h2>
-            <input id="entered-city" type="text" class="input mb-1 p-1"/>
-            <button id="search-button" type="button" class="btn btn-outline-primary mb-3">Search</button>
+            <div class="border-bottom">
+                <input id="entered-city" type="text" placeholder="Sydney" class="input mb-1 p-1"/>
+                <button id="search-button" type="button" class="btn btn-outline-primary mb-3">Search</button>    
+            </div>
             <ul class="city-search-list list-group">
             </ul>
         </aside>
         <div class="col-9">
-            <section class="current-weather col-9">
+            <section class="current-weather col-9 border w-100 p-3">
                 <h2 id="city-name"></h2>
                 <h4 id="current-date"></h4>
                 <ul class="list-unstyled">
-                    <li id="current-icon">Icon here</li>
+                    <img id="current-icon"></img>
                     <li id="current-temperature" >Temperature: </li>
                     <li id="current-wind">Wind: </li>
                     <li id="current-humidity">Humidity: </li>
@@ -40,12 +42,12 @@
             </section>
 
             <section class="forecast">
-                <div class="flex">
-                    <div class="row justify-contenet-evenly">
+                <div class="flex pt-3">
+                    <div class="row justify-content-evenly">
                         <div class="card" style="width: 11rem;">
                             <div id="day-1" class="card-body">
                             <h5 class="card-title date" id="day-1-date">Day 1</h5>
-                            <p class="card-text forecast-icon"></p>
+                            <img class="card-text forecast-icon"></img>
                             <p class="forecast-temp">Temperature: </p>
                             <p class="card-text forecast-wind">Wind: </p>
                             <p class="card-text forecast-humidity">Humidity: </p>
@@ -54,7 +56,7 @@
                         <div class="card" style="width: 11rem;">
                             <div id="day-2" class="card-body">
                             <h5 class="card-title date" id="day-2-date">Day 2</h5>
-                            <p class="card-text forecast-icon"></p>
+                            <img class="card-text forecast-icon"></img>
                             <p class="forecast-temp">Temperature: </p>
                             <p class="card-text forecast-wind">Wind: </p>
                             <p class="card-text forecast-humidity">Humidity: </p>
@@ -63,7 +65,7 @@
                         <div class="card" style="width: 11rem;">
                             <div id="day-3" class="card-body">
                             <h5 class="card-title date" id="day-3-date">Day 3</h5>
-                            <p class="card-text forecast-icon"></p>
+                            <img class="card-text forecast-icon"></img>
                             <p class="forecast-temp">Temperature: </p>
                             <p class="card-text forecast-wind">Wind: </p>
                             <p class="card-text forecast-humidity">Humidity: </p>
@@ -72,7 +74,7 @@
                         <div class="card" style="width: 11rem;">
                             <div id="day-4" class="card-body">
                             <h5 class="card-title date" id="day-4-date">Day 4</h5>
-                            <p class="card-text forecast-icon"></p>
+                            <img class="card-text forecast-icon"></img>
                             <p class="forecast-temp">Temperature: </p>
                             <p class="card-text forecast-wind">Wind: </p>
                             <p class="card-text forecast-humidity">Humidity: </p>
@@ -81,7 +83,7 @@
                         <div class="card" style="width: 11rem;">
                             <div id="day-5" class="card-body">
                             <h5 class="card-title date" id="day-5-date">Day 5</h5>
-                            <p class="card-text forecast-icon"></p>
+                            <img class="card-text forecast-icon"></img>
                             <p class="forecast-temp">Temperature: </p>
                             <p class="card-text forecast-wind">Wind: </p>
                             <p class="card-text forecast-humidity">Humidity: </p>
