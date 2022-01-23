@@ -31,29 +31,45 @@ var forecastedDate = document.querySelectorAll(".date")
 var forecastIcon = document.querySelectorAll(".forecast-icon")
 var forecastTemp = document.querySelectorAll(".forecast-temp")
 var forecastWind = document.querySelectorAll(".forecast-wind")
-var forecastHumidity = document.querySelectorAll(".forecast-temp")
+var forecastHumidity = document.querySelectorAll(".forecast-humidity")
 
+function getSavedCities() {
+    savedCities = JSON.parse(localStorage.getItem("savedCities"));
+}
 
 // Get current weather data for selected city
 function getCurrentWeather() {
-    // TODO: Retest when API key is activated
-    // TODO: Validate that city is not required
-    var requestURL = "https://api.openweathermap.org/data/2.5/weather?q=" + chosenCity + "&appid=" + APIkey;
+    var currentWeatherURL = "https://api.openweathermap.org/data/2.5/weather?q=" + chosenCity + "&appid=" + APIkey;
 
-    fetch(requestURL)
+    //Get data from the API
+    fetch(currentWeatherURL)
         .then(function (response) {
             return response.json();
         })
         .then(function (data) {
             console.log(data)
+            // Save the data into currentWeather variable
             currentWeather = data
             // TODO: Add icon field
-            currentIcon.textContent = data.weather[0].icon
-            currentTemp.textContent = "Temperature: " + data.main.temp + "F";
-            currentWind.textContent = "Wind: " + data.wind.speed + "MPH";
-            currentHumidity.textContent = "Humidity: " + data.main.humidity + "%";
-            // UV data requires OneCallAPI
+
+            // Save the city, longatude and latitude to local storage
+            savedCities = {
+                cityName: currentWeather.name,
+                currCityLon: currentWeather.coord.lon,
+                currCityLat: currentWeather.coord.lat,
+              };
+            localStorage.setItem("savedCities", JSON.stringify(savedCities));
+
+            // Set the content of the page from the API data
+            currentIcon.textContent = currentWeather.weather[0].icon
+            currentTemp.textContent = "Temperature: " + currentWeather.main.temp + "F";
+            currentWind.textContent = "Wind: " + currentWeather.wind.speed + "MPH";
+            currentHumidity.textContent = "Humidity: " + currentWeather.main.humidity + "%";
+            // TODO: UV data requires OneCallAPI
             // currentUvIndex.textContent = "UV Index: " + data.main.uv;
+
+            // Now that we have saved the city, longatude and latitude to local storage, we can get the forecasted weather
+            getForecastedWeather();
         })
 }
 
@@ -61,35 +77,40 @@ function getCurrentWeather() {
 // Get forecasted weather data for selected city
 // TODO: To finish
 function getForecastedWeather() {
-    // var requestURL = "api.openweathermap.org/data/2.5/forecast/daily?q=" + chosenCity + "&appid=" + APIkey;
+    // Get the longatude and latitude from local storage
+    var savedCities = JSON.parse(localStorage.getItem("savedCities"));
+    var currCityLat = savedCities.currCityLat
+    console.log(currCityLat)
+    var currCityLon = savedCities.currCityLon
+    console.log(currCityLon)
+
+    // 
+    var forecastWeatherURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + currCityLat + "&lon=" + currCityLon + "&appid=" + APIkey;
 
     // Set data on forecasted weather cards
-    for (i = 0; i < forecastedDate.length; i++) {
-        forecastedDate[i].textContent = moment().add('days', i).format("DD-MM-YYYY");
-    }
+    fetch(forecastWeatherURL)
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            // Save forecast data to variable
+            forecastedWeather = data;
+            console.log(forecastedWeather)
 
+            // Loop through to set the date and cooresponding forecast data
+            for (i = 0; i < forecastedDate.length; i++) {
+                forecastedDate[i].textContent = moment().add('days', i).format("DD-MM-YYYY");
+                forecastedDate[i].setAttribute("id", forecastedWeather.daily[i].dt); 
 
-    // fetch(requestURL)
-    //     .then(function (response) {
-    //         return response.json();
-    //     })
-    //     .then(function (data) {
-    //         console.log(data)
-    //         forecastedWeather = data;
-    //         console.log("Forecasted data: " + data)
-    //         forecastIcon.textContent = "Icon here";
-    //         forecastTemp.textContent = "Temp here";
-    //         forecastWind.textContent = "Wind here";
-    //         forecastHumidity.textContent = "Wind here";
+                // forecastIcon.textContent = "Icon here";
+                forecastTemp[i].textContent = "Temperature: " + forecastedWeather.daily[i].temp.day +  "F";
+                forecastWind[i].textContent = "Wind: " + forecastedWeather.daily[i].wind_speed + "MPH";
+                forecastHumidity[i].textContent = "Humidity: " + forecastedWeather.daily[i].humidity + "%";
 
-            // TODO: Loop through data and set content for 5 days
+                // TODO: Add icon field   
+        }
 
-            // TODO: Add icon field
-            // TODO: Set content of forecasted temperature element
-            // TODO: Set content of forecasted wind element
-            // TODO: Set content of forecasted humidity element
-        // })
-}
+})}
 
 
 // Figure out what city has been entered in the search input then call the function to get and render the data
@@ -112,7 +133,6 @@ cityManualSearchBtn.addEventListener("click", function(event) {
     cityName.textContent = chosenCity
 
     getCurrentWeather();
-    getForecastedWeather();
 })
 
 
@@ -126,8 +146,7 @@ citySearchList.addEventListener("click", function(event) {
     // Render name of city on the page
     cityName.textContent = chosenCity;
 
-    getCurrentWeather(); 
-    getForecastedWeather();  
+    getCurrentWeather();  
 })
 
 
